@@ -100,8 +100,7 @@ XkbFreeCompatMap(XkbDescPtr xkb, unsigned which, Bool freeMap)
     if (which & XkbGroupCompatMask)
         bzero(&compat->groups[0], XkbNumKbdGroups * sizeof(XkbModsRec));
     if (which & XkbSymInterpMask) {
-        if ((compat->sym_interpret) && (compat->size_si > 0))
-            _XkbFree(compat->sym_interpret);
+        _XkbFree(compat->sym_interpret);
         compat->size_si = compat->num_si = 0;
         compat->sym_interpret = NULL;
     }
@@ -266,7 +265,7 @@ XkbAllocControls(XkbDescPtr xkb, unsigned which)
 void
 XkbFreeControls(XkbDescPtr xkb, unsigned which, Bool freeMap)
 {
-    if (freeMap && (xkb != NULL) && (xkb->ctrls != NULL)) {
+    if (freeMap && (xkb != NULL) ) {
         _XkbFree(xkb->ctrls);
         xkb->ctrls = NULL;
     }
@@ -291,7 +290,7 @@ XkbAllocIndicatorMaps(XkbDescPtr xkb)
 void
 XkbFreeIndicatorMaps(XkbDescPtr xkb)
 {
-    if ((xkb != NULL) && (xkb->indicators != NULL)) {
+    if (xkb != NULL)  {
         _XkbFree(xkb->indicators);
         xkb->indicators = NULL;
     }
@@ -389,10 +388,8 @@ XkbResizeDeviceButtonActions(XkbDeviceInfoPtr devi, unsigned newTotal)
     if ((devi->btn_acts != NULL) && (newTotal == devi->num_btns))
         return Success;
     if (newTotal == 0) {
-        if (devi->btn_acts != NULL) {
-            _XkbFree(devi->btn_acts);
-            devi->btn_acts = NULL;
-        }
+        _XkbFree(devi->btn_acts);
+        devi->btn_acts = NULL;
         devi->num_btns = 0;
         return Success;
     }
@@ -458,12 +455,10 @@ XkbFreeDeviceInfo(XkbDeviceInfoPtr devi, unsigned which, Bool freeDevI)
     if (devi) {
         if (freeDevI) {
             which = XkbXI_AllDeviceFeaturesMask;
-            if (devi->name) {
                 _XkbFree(devi->name);
                 devi->name = NULL;
-            }
         }
-        if ((which & XkbXI_ButtonActionsMask) && (devi->btn_acts)) {
+        if (which & XkbXI_ButtonActionsMask)  {
             _XkbFree(devi->btn_acts);
             devi->num_btns = 0;
             devi->btn_acts = NULL;
