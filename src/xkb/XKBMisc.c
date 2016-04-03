@@ -831,7 +831,7 @@ XkbUpdateActionVirtualMods(XkbDescPtr xkb, XkbAction *act, unsigned changed)
     case XkbSA_SetMods:
     case XkbSA_LatchMods:
     case XkbSA_LockMods:
-        if (((tmp = XkbModActionVMods(&act->mods)) & changed) != 0) {
+        if (((tmp = XkbModActionVMods(&act->mods)) && changed) != 0) {
             XkbVirtualModsToReal(xkb, tmp, &tmp);
             act->mods.mask = act->mods.real_mods;
             act->mods.mask |= tmp;
@@ -839,7 +839,7 @@ XkbUpdateActionVirtualMods(XkbDescPtr xkb, XkbAction *act, unsigned changed)
         }
         break;
     case XkbSA_ISOLock:
-        if ((((tmp = XkbModActionVMods(&act->iso)) != 0) & changed) != 0) {
+        if ((((tmp = XkbModActionVMods(&act->iso)) != 0) && changed) != 0) {
             XkbVirtualModsToReal(xkb, tmp, &tmp);
             act->iso.mask = act->iso.real_mods;
             act->iso.mask |= tmp;
