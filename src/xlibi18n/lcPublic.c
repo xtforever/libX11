@@ -78,7 +78,7 @@ create(
     XLCdMethods methods)
 {
     XLCd lcd;
-    XLCdPublicMethods new;
+    XLCdPublicMethods new=NULL;
 
     lcd = Xcalloc(1, sizeof(XLCdRec));
     if (lcd == NULL)
@@ -97,6 +97,7 @@ create(
     return lcd;
 
 err:
+    Xfree(lcd->core);
     Xfree(lcd);
     return (XLCd) NULL;
 }
